@@ -13,6 +13,9 @@ import asyncio
 tokenFile = open("botToken.txt")
 BOT_TOKEN = tokenFile.read()
 
+
+
+
 #first we set up all the stuff relating to generating challenges because I mostly already know what I'm doing here
 guns = ["MK418", "AK12", "AK303N", "GrotB", "MR96", "UMP45", "Vector45", "Vityaz", "APC9Pro", "G17", "MK23", "PL14","PM9", "Desert Eagle", "G28Z", "ScarH", "Kanto"]
 categories = ["Rifle", "DMR", "Sidearm", "SMG", "Grenade"]
@@ -20,7 +23,9 @@ sights = [] #implement later maybe? too many to list and no concrete list
 maps = ["Cliffside", "Este", "Khidi", "Maar", "Miru", "Volt", "Nine", "Suna", "The Void", "Atmos"]
 modes = ["CTO", "Artifact", "TDM", "FFA", "Gun Game", "Hardpoint", "SKZ", "One in the Chamber"]
 
-#why is this not a default function
+#if anyone out there has a good list of all the sights in the game please tell me so I can use it to make challenges thanks
+
+#why is this not a default function/method
 def listCombiner(list1, list2):
     endlist = list1
     endlist.extend(list2)
@@ -41,7 +46,7 @@ Kill through map geometry
 Be alive while 5 enemy players are dead (no ART)
 Kill while you are airborne
 360 spin kill
-Get a kill with 5 different weapons with scopes (no MRO or SpitfireAR)
+Get a kill with 5 different weapons with zoom scopes (no MRO or SpitfireAR)
 Get 2 kills with each weapon in your loadout in one life
 Defuse or plant the Artifact Scanner while the entire enemy team is dead
 Get a knife kill on someone you can't see
@@ -81,11 +86,11 @@ myIntents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=myIntents)
 client = discord.Client(intents=myIntents)
 tree = app_commands.CommandTree(client)
-usersInChallenges = []
+usersInChallenges = [] #keep track of who's playing so no one can get challenged twice
 
 @bot.event
 async def on_ready():
-    print(f'{bot.user.name} has connected to Discord!')
+    print(f'{bot.user.name} has connected to Discord!') #connect bot to discord, put console output once connected
 
 @bot.command(name="generateChallenges", help="generates a user-set number of VAIL Lockout challenges. does not start a VAIL Lockout race.")
 async def getSomeChallenges(ctx, numChallenges: int):
