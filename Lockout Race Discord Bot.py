@@ -151,7 +151,8 @@ class DropdownView(discord.ui.View):
         self.selected_value = None #challenge claimed by user
         self.claimingPlayer = None #player making the claim
         # Adds the dropdown to our view object.
-        self.add_item(Dropdown(self.challengesToList, self.playersInGame, self.ctx))
+        self.add_item(Dropdown(self.challengesToList, self.playersInGame, self.ctx)) #i wish I didn't need to use separate classes here, but it didn't work if i tried to make it one class for some reason
+                                                                                     #I tried all the methods
 
 class Dropdown(discord.ui.Select):
     def __init__(self, bChallengesToList, players, ctx): #the "b" in "bChallengesToList" is just to differentiate from challengesToList in DropdownView
@@ -272,10 +273,7 @@ async def LockoutRace(ctx, MemberToChallenge:discord.Member,challengesToWin:typi
             await ctx.send(MemberToChallenge.mention +" has denied the challenge. Sorry, "+ctx.author.mention+".")
             usersInChallenges.remove(ctx.author)
             usersInChallenges.remove(MemberToChallenge)
-
-
         
-
 @LockoutRace.error
 async def info_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
