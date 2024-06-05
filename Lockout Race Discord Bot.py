@@ -7,8 +7,8 @@ import typing
 import asyncio
 
 #==================================================================================================================
-#=========In the same folder as this script, make a file named botToken.txt and put your bot's token in it=========
-#========================================otherwise this bot will not work==========================================
+#======== In the same folder as this script, make a file named botToken.txt and put your bot's token in it ========
+#======================================= otherwise this bot will not work =========================================
 #==================================================================================================================
 tokenFile = open("botToken.txt")
 BOT_TOKEN = tokenFile.read()
@@ -251,11 +251,13 @@ async def LockoutRace(ctx, MemberToChallenge:discord.Member,challengesToWin:typi
                     x = players.copy() #temp copy of players list to find the one who *wasn't* claiming
                     x.remove(view.claimingPlayer)
                     nonClaimingPlayer = x[0]
-                    await ctx.send("Hey "+nonClaimingPlayer.mention+","+view.claimingPlayer.mention+" just claimed **"+view.selected_value+".**\nYou're outta luck if you were going for it, because now you're Locked Out!", delete_after=3600.0)
+                    await ctx.send("Hey "+nonClaimingPlayer.mention+","+view.claimingPlayer.mention+" just claimed **"+view.selected_value+".**\nYou're out of luck if you were going for it, because now you're Locked Out!", delete_after=3600.0)
                     challengesAvailable.remove(view.selected_value)
                     challengesCompleted[view.claimingPlayer].append(view.selected_value)
                     scores[view.claimingPlayer] = len(challengesCompleted[view.claimingPlayer])
                     scores[nonClaimingPlayer] = len(challengesCompleted[nonClaimingPlayer])
+                else:
+                    print("users took too long to answer interaction. generating new dropdown message.")
             print("racing users removed from list of users in play")
             usersInChallenges.remove(ctx.author) #at the end of the game, remove both players from the "in a game" list so they can play again.
             usersInChallenges.remove(MemberToChallenge)
