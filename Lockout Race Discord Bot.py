@@ -41,7 +41,8 @@ Kill while holding the objective IN YOUR HAND (scanner, orb)
 Kill an enemy while both you can them are on the hardpoint 
 Kill an enemy using the same weapon as them 5 times (No SKZ)
 Get a kill while YOU are flashed
-Get 2+ kills with one grenade or bullet 3 times
+Get 2+ kills with one grenade 3 times
+Get 2+ kills with one BULLET (MR96 recommended)
 Kill through map geometry
 Be alive while 5 enemy players are dead (no ART)
 Kill while you are airborne
