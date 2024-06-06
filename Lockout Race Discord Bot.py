@@ -60,15 +60,16 @@ def generateRngChallenges():
         "Get "+str(random.randint(5, 12))+" frag nade kills", 
         "Get "+str(random.randint(3, 12))+" impact frag kills",  
         "Get "+str(random.randint(7, 25))+" kills with " + random.choice(categories)+"s", 
-        #"Get "+str(random.randint(5, 15))+" knife kills", #not so much a fan of this one since it can already occur as random from another challenge
-        "Get "+str(random.randint(10, 25))+" kills with a "+random.choice(guns), 
+        "Get "+str(random.randint(5, 15))+" knife kills", #not so much a fan of this one since it can already occur as random from another challenge
+        "Get "+str(random.randint(8, 25))+" kills with a "+random.choice(guns), 
         "Get "+str(random.randint(3, 9))+" kills with a "+random.choice(guns)+" in one life", 
         "Get a kill with every "+ random.choice(categories), 
         "Get "+str(random.randint(2, 10))+" kills through smoke", 
         "Get "+str(random.randint(2, 6))+" headshot kills in one life",
         "Get "+str(random.randint(2, 4))+" kills back-to-back "+str(random.randint(2, 4))+" times",
         "Get "+str(random.randint(5, 12))+" kills using your non-dominant hand",
-        "Get "+str(random.randint(5, 12))+" headshot kills using iron sights"
+        "Get "+str(random.randint(5, 12))+" headshot kills using iron sights",
+        "Get "+str(random.randint(5, 12))+" kills with a SCARH on full auto"
     ]
     return listr
 
@@ -256,6 +257,7 @@ async def LockoutRace(ctx, MemberToChallenge:discord.Member,challengesToWin:typi
                     challengesCompleted[view.claimingPlayer].append(view.selected_value)
                     scores[view.claimingPlayer] = len(challengesCompleted[view.claimingPlayer])
                     scores[nonClaimingPlayer] = len(challengesCompleted[nonClaimingPlayer])
+                    await asyncio.sleep(1)
                 else:
                     print("users took too long to answer interaction. generating new dropdown message.")
             print("racing users removed from list of users in play")
