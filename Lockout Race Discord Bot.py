@@ -94,7 +94,7 @@ usersInChallenges = [] #keep track of who's playing so no one can get challenged
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!') #connect bot to discord, put console output once connected
 
-@bot.command(name="generateChallenges", help="generates a user-set number of VAIL Lockout challenges. does not start a VAIL Lockout race.")
+@bot.hybrid_command(name="generatechallenges", help="generates a user-set number of VAIL Lockout challenges. does not start a VAIL Lockout race.")
 async def getSomeChallenges(ctx, numChallenges: int):
     RngChallenges = generateRngChallenges()
     allChallenges = listCombiner(RngChallenges, noRngChallenges) #generate all challenges
