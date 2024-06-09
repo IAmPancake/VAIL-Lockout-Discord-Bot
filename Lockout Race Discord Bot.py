@@ -86,7 +86,7 @@ allChallenges = listCombiner(RngChallenges, noRngChallenges)
 myIntents = discord.Intents.default()
 myIntents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=myIntents)
-client = discord.Client(intents=myIntents)
+#client = discord.Client(intents=myIntents) #unnenecessary??
 tree = app_commands.CommandTree(client)
 usersInChallenges = [] #keep track of who's playing so no one can get challenged twice
 
