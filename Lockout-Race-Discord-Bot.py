@@ -138,7 +138,7 @@ class Confirm(discord.ui.View): #buttons for accepting or denying a challenge
     # This one is similar to the confirmation button except sets the inner value to `False`
     @discord.ui.button(label='Deny Challenge', style=discord.ButtonStyle.grey)
     async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer()
         if (interaction.user == self.targetUser): #only the person being challenged can deny
             self.value = False
             self.stop()
