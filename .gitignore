@@ -397,3 +397,7 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 botToken.txt
+/Bot
+/Discord
+/Lockout
+/Race
