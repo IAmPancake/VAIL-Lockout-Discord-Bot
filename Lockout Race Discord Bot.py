@@ -104,9 +104,9 @@ async def getSomeChallenges(ctx, numchallenges: int):
     RngChallenges = generateRngChallenges()
     allChallenges = listCombiner(RngChallenges, noRngChallenges) #generate all challenges
     if (numchallenges > len(allChallenges)):
-        await ctx.send("You requested more challenges than can be generated.") #prevent users from generating for unique challenges than there are unique challenges
+        await ctx.send("You requested more challenges than can be generated.", delete_after = 10.0) #prevent users from generating for unique challenges than there are unique challenges
     elif (numchallenges < 1):
-        await ctx.send("Cannot generate less than 1 challenge") #obvious
+        await ctx.send("Cannot generate less than 1 challenge", delete_after = 10.0) #obvious
     else:
         response = random.sample(allChallenges, numchallenges) #pick a random sample of unique challenges. note that it cannot pick two of the same random challenge even if the random makes it non duplicate
         await ctx.send("\n".join(response))
