@@ -13,9 +13,6 @@ import asyncio
 tokenFile = open("botToken.txt")
 BOT_TOKEN = tokenFile.read()
 
-
-
-
 #first we set up all the stuff relating to generating challenges because I mostly already know what I'm doing here
 guns = ["MK418", "AK12", "AK303N", "GrotB", "MR96", "UMP45", "Vector45", "Vityaz", "APC9Pro", "G17", "MK23", "PL14","PM9", "Desert Eagle", "G28Z", "ScarH", "Kanto"]
 categories = ["Rifle", "DMR", "Sidearm", "SMG", "Grenade"]
