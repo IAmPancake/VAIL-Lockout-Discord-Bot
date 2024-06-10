@@ -76,7 +76,7 @@ def generateRngChallenges():
 RngChallenges = generateRngChallenges()
 allChallenges = listCombiner(RngChallenges, noRngChallenges)
 #print("\n".join(allChallenges))
-#print("\n")
+print("\n")
 
 #================actual bot behavior and such starts here
 
