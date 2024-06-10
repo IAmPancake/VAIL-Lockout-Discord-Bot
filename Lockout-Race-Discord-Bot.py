@@ -81,7 +81,7 @@ allChallenges = listCombiner(RngChallenges, noRngChallenges)
 #================actual bot behavior and such starts here
 
 myIntents = discord.Intents.default()
-myIntents.message_content = True
+#no special intents needed!
 bot = commands.Bot(command_prefix='!', intents=myIntents)
 client = discord.Client(intents=myIntents) #unnenecessary??
 tree = app_commands.CommandTree(client)

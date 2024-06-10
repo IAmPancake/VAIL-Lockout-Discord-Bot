@@ -4,7 +4,8 @@
 ### What is a Lockout Race?
  A Lockout Race (often just called a "Lockout") is race between two players to complete a set number of challenges in a given game. However, both players are given the same set of challenges, and once one person does a challenge, the other player is Locked Out of completing the same one, hence the name.
 
-This project is very much a work in progress and not meant to be used. Yet.
+This project is very much a work in progress and may break during use. Not (yet) designed for use in highly populated servers.
+Just saying, I warned you
 
 If you actually want to use/test this, you'll need
 - Python 3 and these libraries
@@ -12,6 +13,11 @@ If you actually want to use/test this, you'll need
   - asyncio
 - A discord bot of your own to run the script on
   - put the bot's token in a text file called "botToken.txt" in tha same folder as the main script. just paste in the token, no formatting
-- A willingness to put up with the bot breaking (hopefully not required for long)
+- some patience
+
+The bot requires permissions to send messages and use slash commands in any server it is added to.
+User installation not officially supported in any capacity.
+Btw for hosters, no privileged gateway intents are needed.
+
 
 also if you have any ideas for challenges to add to the list, DM me (@iampancake on Discord)
