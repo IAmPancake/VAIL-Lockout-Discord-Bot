@@ -30,7 +30,7 @@ def listCombiner(list1, list2):
 
 #.splitlines at the end turns this into a nice list. one challenge per line
 #this list is only for challenges that have no arguments/random parts (i.e. get x kills in one life), where we want to randomize x
-#those will be in a separate list  which will be appended to this one
+#those will be in a separate list which will be appended to this one
 noRngChallenges = """Get a kill with 3 different primary weapons in one life
 Kill your Lockout opponent with a headshot
 Kill your Lockout opponent twice in one life
@@ -85,6 +85,7 @@ myIntents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=myIntents)
 client = discord.Client(intents=myIntents) #unnenecessary??
 tree = app_commands.CommandTree(client)
+
 usersInChallenges = [] #keep track of who's playing so no one can get challenged twice
 
 @bot.event
@@ -100,12 +101,11 @@ async def on_ready():
 async def racehelp(ctx): 
     dmChannel = await ctx.author.create_dm()
     await dmChannel.send("### What is a Lockout Race?\nA Lockout Race (often just called a 'Lockout') is a race between two players to complete a set number of challenges in a given game. However, both players are given the same set of challenges, and once one person does a challenge, the other player is Locked Out of completing the same one, hence the name.\n\n### How do I use the bot?\nThe bot's command structure is simple. just put in '/lockoutrace' and then ping the person you want to challenge. \nThis will start a first-to-13 race with a 120-second ready-up timer, so you can your opponent can open the game and party up before the race starts\nyou can change those settings at will when you initially call the command. Just use the extra settings in the command prompt\n\n### What are the rules of a VAIL Lockout Race?\nOther than the general concept as organized by the bot, there is no official ruleset, so feel free to come up with your own rules! Just make sure to agree on a specific ruleset before you start. \nHere's my reccomended setup:\nBoth players party up and queue for quickplay together, but swap to opposite teams at every opportunity.\nWhenever a player completes a challenge, both players must exit the match and requeue at the end of the current game.\nAlso, players can agree to requeue at any time, though they MUST always queue together.\nPlayers may not get any intentional help from other players outside the challenge.\nFor the purposes of challenges related to doing things 'in one life', a life can extend between Artifact rounds but not between games.\n\n### LICENSE INFO\nThe bot's code can be found online at https://github.com/IAmPancake/VAIL-Lockout-Discord-Bot, under an MIT License. Full license details are available there, in the 'LICENSE' file.\nContent creators, you may use my bot for whatever you want, including monetized content, with or without credit. (You may want to add credit anyway, so curious viewers can find the bot.) \n\nHappy racing!\n-IAmPancake")
-    #trust me
 
-@bot.hybrid_command(name="generatechallenges", help="generates a user-set number of VAIL Lockout challenges.")
+@bot.hybrid_command(name="generatechallenges", help="generates a user-set number of VAIL Lockout challenges.") #just give out some challenges, no racing
 async def getSomeChallenges(ctx, numchallenges: int):
     RngChallenges = generateRngChallenges()
-    allChallenges = listCombiner(RngChallenges, noRngChallenges) #generate all challenges
+    allChallenges = listCombiner(RngChallenges, noRngChallenges) #generate the set of challenges to pull from
     if (numchallenges > len(allChallenges)):
         await ctx.send("You requested more challenges than can be generated.", delete_after = 10.0) #prevent users from generating for unique challenges than there are unique challenges
     elif (numchallenges < 1):
@@ -162,9 +162,10 @@ class DropdownView(discord.ui.View):
         
         self.selected_value = None #challenge claimed by user
         self.claimingPlayer = None #player making the claim
+
         # Adds the dropdown to our view object.
         self.add_item(Dropdown(self.challengesToList, self.playersInGame, self.ctx)) #i wish I didn't need to use separate classes here, but it didn't work if i tried to make it one class for some reason. I tried every way
-    @discord.ui.button(label='View Unclaimed Challenges', style=discord.ButtonStyle.grey)
+    @discord.ui.button(label='View Unclaimed Challenges', style=discord.ButtonStyle.grey) #if you just want to see the remaining challenges laid out, this button was added to do so w/o cluttering chat (uses ephemeral message)
     async def viewChallengesLeft(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_message("**Challenges Remaining: "+str(len(self.challengesToList))+"**\n"+"\n".join(self.challengesToList), ephemeral=True)
 
@@ -173,21 +174,16 @@ class Dropdown(discord.ui.Select):
         self.bChallengesToList = bChallengesToList
         self.players = players
         self.ctx = ctx
-        # Set the options that will be presented inside the dropdown
+        
         options = []
         #print(" ".join(self.bChallengesToList)) #debugging
         for i in self.bChallengesToList:
-            options.append(discord.SelectOption(label=i, value=i))
-        print("challenges have been generated for dropdown")
+            options.append(discord.SelectOption(label=i, value=i)) 
+        print("challenges have been listed for dropdown") #debug stuff
         
-        # The placeholder is what will be shown when no option is chosen
-        # The min and max values indicate we can only pick one of the three options
-        # The options parameter defines the dropdown options. We defined this above
         super().__init__(placeholder="Choose a challenge once you've completed it", min_values=1, max_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
-        # Use the interaction object to send a response message containing
-        # the user's choice. The self object refers to the select obj and blah blah blah idc abt text from template
         await interaction.response.defer()
         if (interaction.user in self.players):#only people in this race can claim
             print("a challenge has been claimed")
@@ -206,8 +202,6 @@ class ViewAllChallenges(discord.ui.View): #button for seeing all challenges at e
         self.claimedChallenges = claimedChallenges
         self.unclaimedChallenges = unclaimedChallenges
         
-    # When the confirm button is pressed, set the inner value to `True` and
-    # stop the View from listening to more input.
     @discord.ui.button(label='View All Challenges', style=discord.ButtonStyle.grey)
     async def viewAllChallengesEnd(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_message(("**Uncompleted Challenges:**\n"+"\n".join(self.unclaimedChallenges)+"\n**Challenges completed by "+self.players[0].display_name+": "+str(self.scores[self.players[0]])+"**\n"+"\n".join(self.claimedChallenges[self.players[0]])+"\n \n**Challenges completed by "+self.players[1].display_name+": "+str(self.scores[self.players[1]])+"**\n"+"\n".join(self.claimedChallenges[self.players[1]])), ephemeral=True)
@@ -221,7 +215,7 @@ class ViewAllChallenges(discord.ui.View): #button for seeing all challenges at e
 async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typing.Optional[int] = 13,challengegeneratetimer:typing.Optional[int]=120):
     print("lockout race cmd sent")
     
-    global usersInChallenges
+    global usersInChallenges #global so that people can't be in two races at once
     numChallenges = (challengestowin*2)-1
     RngChallenges = generateRngChallenges()
     allChallenges = listCombiner(RngChallenges, noRngChallenges) #generate all challenges
@@ -266,16 +260,15 @@ async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typi
             await ctx.send(ctx.author.mention+", your challenge was accepted! Hop in a party together, queue, and race to be the first to do **"+str(challengestowin)+"** of these challenges\n(and remember, once one player does a challenge, the other one is Locked Out from doing it!)")
             if challengegeneratetimer != 0:
                 await ctx.send("Your challenges will be generated in about "+str(round(challengegeneratetimer/60,2))+" minutes. Take the time to open VAIL and get in a party, because the race starts as soon as the challenges are shown!")
-                #async with channel.typing():
                 print("waiting for challenge timer")
-                await asyncio.sleep(challengegeneratetimer)
+                await asyncio.sleep(challengegeneratetimer) #give ppl time to open game
             await ctx.send(ctx.author.mention+" and "+membertochallenge.mention+", here are your challenges!\nFirst to complete **"+str(challengestowin)+"** of them wins!\n"+("\n".join(challengesPerGame)))
             print("game start")
 
             while((scores[ctx.author]<challengestowin)and(scores[membertochallenge]<challengestowin)):
                 view = DropdownView(challengesAvailable, players, ctx)
                 await ctx.send("The score is **"+str(ctx.author.mention+" "+str(scores[ctx.author])+" : "+str(scores[membertochallenge])+" "+membertochallenge.mention+"**\nFirst to "+str(challengestowin)+" challenges complete wins!\nChoose a challenge to claim (note: claims as soon as you click!"), view=view, delete_after=180.0, silent=True)
-                await view.wait() 
+                await view.wait() #wait for a valid challenge claim
                 if view.selected_value != None:
                     print("Continue with the code post-selection")
                     print(view.selected_value)
@@ -287,30 +280,30 @@ async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typi
                     
                     await ctx.send("Hey "+nonClaimingPlayer.mention+","+view.claimingPlayer.mention+" just claimed **"+view.selected_value+".**\nYou're out of luck if you were going for it, because now you're Locked Out!", delete_after=3600.0)
                     
-                    challengesAvailable.remove(view.selected_value)
+                    challengesAvailable.remove(view.selected_value) #remove completed challenge from list
                     challengesCompleted[view.claimingPlayer].append(view.selected_value)
                     
                     scores[view.claimingPlayer] = len(challengesCompleted[view.claimingPlayer])
                     scores[nonClaimingPlayer] = len(challengesCompleted[nonClaimingPlayer])
                     
-                    await asyncio.sleep(1)
+                    await asyncio.sleep(1) #prevent rate limiting by self rate limiting lol
                 else:
                     print("users took too long to answer interaction. generating new dropdown message.")
+            
             print("racing users removed from list of users in play")
             usersInChallenges.remove(ctx.author) #at the end of the game, remove both players from the "in a game" list so they can play again.
             usersInChallenges.remove(membertochallenge)
             if(scores[ctx.author]>=challengestowin):
                 winner = ctx.author
-            else:
+            else: #since there's only 2 ppl, no need for elif
                 winner = membertochallenge
             gameEndButtonView = ViewAllChallenges(players, scores, challengesCompleted, challengesAvailable) #add a button to send an ephemeral message of which challenges were claimed by whom
             await ctx.send("GAME OVER\nEnd Score: **"+ctx.author.mention+" "+str(scores[ctx.author])+" : "+str(scores[membertochallenge])+" "+membertochallenge.mention+"**\n**"+winner.display_name+"** is the winner!", view=gameEndButtonView)
+            print("a race ended")
             
-            #uncomment the below line if you want the bot to print out a list of who did what challenges after the game ends. NOT TESTED. LIKELY WILL SEND A LARGE MESSAGE
-            #await ctx.send("**Challenges completed by "+ctx.author.display_name+": "+str(scores[ctx.author])+"**\n"+"\n".join(challengesCompleted[ctx.author])+"\n \n**Challenges completed by "+membertochallenge.display_name+": "+str(scores[membertochallenge])+"**\n"+"\n".join(challengesCompleted[membertochallenge]))
             
         else:
-            print('Cancelled...')
+            print('Cancelled...') #if challenge denied
             await ctx.send(membertochallenge.mention +" has denied the challenge. Sorry, "+ctx.author.mention+".")
             usersInChallenges.remove(ctx.author)
             usersInChallenges.remove(membertochallenge)
