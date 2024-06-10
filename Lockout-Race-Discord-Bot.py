@@ -67,16 +67,16 @@ def generateRngChallenges():
         "Get "+str(random.randint(2, 4))+" kills back-to-back "+str(random.randint(2, 4))+" times",
         "Get "+str(random.randint(5, 12))+" kills using your non-dominant hand",
         "Get "+str(random.randint(5, 12))+" headshot kills using iron sights",
-        "Get "+str(random.randint(5, 12))+" kills with a SCARH on full auto"
+        "Get "+str(random.randint(5, 12))+" kills with a SCARH on full auto",
     ]
     return listr
 
 #use these two lines instead of one for actually rerandomizing the full list to pick from. Why does it only work this way? I don't know and probably never will
 #and i tried making it reference a dictionary for the rng methods which in theory should make it rerandomize every time an item gets pulled from the list, but it didn't work
-RngChallenges = generateRngChallenges()
-allChallenges = listCombiner(RngChallenges, noRngChallenges)
-#print("\n".join(allChallenges))
-print("\n")
+#RngChallenges = generateRngChallenges()
+#allChallenges = listCombiner(RngChallenges, noRngChallenges)
+
+#do not uncomment the above lines
 
 #================actual bot behavior and such starts here
 
