@@ -36,7 +36,7 @@ Kill your Lockout opponent with a headshot
 Kill your Lockout opponent twice in one life
 Kill while holding the objective IN YOUR HAND (scanner, orb)
 Kill an enemy while both you can them are on the hardpoint 
-Kill an enemy using the same weapon as them 5 times (No SKZ)
+Kill an enemy using the same weapon as them 4 times (No SKZ, OitC)
 Get a kill while YOU are flashed
 Get 2+ kills with one grenade 3 times
 Get 2+ kills with one BULLET
@@ -48,7 +48,10 @@ Get a kill with 5 different weapons with zoom scopes (no MRO or SpitfireAR)
 Get 2 kills with each weapon in your loadout in one life
 Defuse or plant the Artifact Scanner while the entire enemy team is dead
 Get a knife kill on someone you can't see
-Get 5+ kills and 0 deaths in one match (not just a single ART round)""".splitlines()
+Get 6 kills in your first life of a match
+Get the most kills AND be the last one standing in one OitC game
+Get 3 knife kills in one Gun Game round and win
+Ride every zipline on Maar (all the way across) in one life""".splitlines()
 
 #this list is for challenges that take arguments so that they can vary between games without having to list each possibility
 #i had to make it a function otherwise it'd just randomize once when you run the script and then stay the same between races. Fun.
@@ -56,7 +59,7 @@ def generateRngChallenges():
     listr = [
         "Win a game of " + random.choice(modes), 
         "Get "+str(random.randint(5, 12))+" frag nade kills", 
-        "Get "+str(random.randint(3, 12))+" impact frag kills",  
+        "Get "+str(random.randint(3, 10))+" impact frag kills",  
         "Get "+str(random.randint(8, 25))+" kills with " + random.choice(categories)+"s", 
         "Get "+str(random.randint(5, 15))+" knife kills", #not so much a fan of this one since it can already occur as random from another challenge
         "Get "+str(random.randint(8, 25))+" kills with a "+random.choice(guns), 
@@ -68,6 +71,7 @@ def generateRngChallenges():
         "Get "+str(random.randint(5, 12))+" kills using your non-dominant hand",
         "Get "+str(random.randint(5, 12))+" headshot kills using iron sights",
         "Get "+str(random.randint(5, 12))+" kills with a SCARH on full auto",
+        "Capture the Hardpoint at "+str(random.randint(2, 3))+" different map positions in one life"
     ]
     return listr
 
