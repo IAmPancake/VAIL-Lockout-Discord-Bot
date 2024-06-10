@@ -19,5 +19,7 @@ The bot requires permissions to send messages and use slash commands in any serv
 User installation not officially supported in any capacity.
 Btw for hosters, no privileged gateway intents are needed.
 
+when running the bot, use !help for a command list, and !racehelp for an FAQ.
+
 
 also if you have any ideas for challenges to add to the list, DM me (@iampancake on Discord)
