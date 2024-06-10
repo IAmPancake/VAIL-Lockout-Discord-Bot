@@ -211,7 +211,7 @@ class ViewAllChallenges(discord.ui.View): #button for seeing all challenges at e
         await interaction.response.send_message(("**Uncompleted Challenges:**\n"+"\n".join(self.unclaimedChallenges)+"\n**Challenges completed by "+self.players[0].display_name+": "+str(self.scores[self.players[0]])+"**\n"+"\n".join(self.claimedChallenges[self.players[0]])+"\n \n**Challenges completed by "+self.players[1].display_name+": "+str(self.scores[self.players[1]])+"**\n"+"\n".join(self.claimedChallenges[self.players[1]])), ephemeral=True)
 
 #this is the actual lockout race command.
-@bot.hybrid_command(name="lockoutrace", help="Challenge someone to a VAIL Lockout Race. Use /racehelp for a full description", description="Challenge someone to a VAIL Lockout Race. Use /racehelp for a full description")
+@bot.hybrid_command(name="lockoutrace", help="Challenge someone to a VAIL Lockout Race. Use !racehelp for a full description", description="Challenge someone to a VAIL Lockout Race. Use !racehelp for a full description")
 @app_commands.describe(
     membertochallenge="Who to challenge to a Lockout Race", 
     challengestowin="Default is first to 13 challenges complete wins.",
