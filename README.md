@@ -16,8 +16,9 @@ If you actually want to use/test this, you'll need
 - some patience
 
 The bot requires permissions to send messages and use slash commands in any server it is added to.
+Bot hosters, you also need to enable the "Message Content" Priveleged Gateway Intent. I'm trying to find a way to work around this.
 User installation not officially supported in any capacity.
-Btw for hosters, no privileged gateway intents are needed.
+
 
 when running the bot, use !help for a command list, and !racehelp for an FAQ.
 
