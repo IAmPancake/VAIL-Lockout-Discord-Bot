@@ -48,7 +48,6 @@ Get a kill with 5 different weapons with zoom scopes (no MRO or SpitfireAR)
 Get 2 kills with each weapon in your loadout in one life
 Defuse or plant the Artifact Scanner while the entire enemy team is dead
 Get a knife kill on someone you can't see
-Get 6 kills in your first life of a match
 Get the most kills AND be the last one standing in one OitC game
 Get 3 knife kills in one Gun Game round and win
 Ride every zipline on Maar (all the way across) in one life""".splitlines()
@@ -71,7 +70,8 @@ def generateRngChallenges():
         "Get "+str(random.randint(5, 12))+" kills using your non-dominant hand",
         "Get "+str(random.randint(5, 12))+" headshot kills using iron sights",
         "Get "+str(random.randint(5, 12))+" kills with a SCARH on full auto",
-        "Capture the Hardpoint at "+str(random.randint(2, 3))+" different map positions in one life"
+        "Capture the Hardpoint at "+str(random.randint(2, 3))+" different map positions in one life",
+        "Get "+str(random.randint(3, 6))+"kills in your first life of a match"
     ]
     return listr
 
