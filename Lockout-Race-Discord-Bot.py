@@ -50,7 +50,8 @@ Defuse or plant the Artifact Scanner while the entire enemy team is dead
 Get a knife kill on someone you can't see
 Get the most kills AND be the last one standing in one OitC game
 Get 3 knife kills in one Gun Game round and win
-Ride every zipline on Maar (all the way across) in one life""".splitlines()
+Ride every zipline on Maar (all the way across) in one life
+Win a game with fewer players on your team than on the opposing team""".splitlines()
 
 #this list is for challenges that take arguments so that they can vary between games without having to list each possibility
 #i had to make it a function otherwise it'd just randomize once when you run the script and then stay the same between races. Fun.
