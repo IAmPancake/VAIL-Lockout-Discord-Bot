@@ -19,7 +19,8 @@ The bot requires permissions to send messages and use slash commands in any serv
 Bot hosters, you also need to enable the "Message Content" Priveleged Gateway Intent. I'm trying to find a way to work around this.
 User installation not officially supported in any capacity.
 
-
+Add the bot to your server with this link: https://discord.com/oauth2/authorize?client_id=1245924283545419789
+(note: I'm hosting this myself, may not last forever!)
 when running the bot, use !help for a command list, and !racehelp for an FAQ.
 
 
