@@ -96,6 +96,7 @@ usersInChallenges = [] #keep track of who's playing so no one can get challenged
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!') #connect bot to discord, put console output once connected
+    print("v1.0 !!!")
     try:
         synced = await bot.tree.sync(guild=None)
         print("command tree synced: " +str(len(synced)))
