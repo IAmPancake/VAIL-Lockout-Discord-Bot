@@ -123,7 +123,7 @@ async def info_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send('you forgot to put in the number of challenges you wanted, silly.')
 
-#------------------
+#------------------#test
 
 class Confirm(discord.ui.View): #buttons for accepting or denying a challenge
     def __init__(self, targetUser, ctx):
