@@ -51,7 +51,8 @@ Get a knife kill on someone you can't see
 Get the most kills AND be the last one standing in one OitC game
 Get 3 knife kills in one Gun Game round and win
 Ride every zipline on Maar (all the way across) in one life
-Win a game with fewer players on your team than on the opposing team""".splitlines()
+Win a game with fewer players on your team than on the opposing team
+Kill someone with their own grenade""".splitlines()
 
 #this list is for challenges that take arguments so that they can vary between games without having to list each possibility
 #i had to make it a function otherwise it'd just randomize once when you run the script and then stay the same between races. Fun.
@@ -72,7 +73,8 @@ def generateRngChallenges():
         "Get "+str(random.randint(5, 12))+" headshot kills using iron sights",
         "Get "+str(random.randint(5, 12))+" kills with a SCARH on full auto",
         "Capture the Hardpoint at "+str(random.randint(2, 3))+" different map positions in one life",
-        "Get "+str(random.randint(3, 6))+"kills in your first life of a match"
+        "Get "+str(random.randint(3, 6))+" kills in your first life of a match",
+        "Get "+str(random.randint(3, 8))+" kills using a primary weapon with one hand"
     ]
     return listr
 
