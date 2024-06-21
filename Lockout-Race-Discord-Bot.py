@@ -54,6 +54,8 @@ Ride every zipline on Maar (all the way across) in one life
 Win a game with fewer players on your team than on the opposing team
 Kill someone with their own grenade""".splitlines()
 
+#testitest
+
 #this list is for challenges that take arguments so that they can vary between games without having to list each possibility
 #i had to make it a function otherwise it'd just randomize once when you run the script and then stay the same between races. Fun.
 def generateRngChallenges():
