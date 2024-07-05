@@ -76,7 +76,7 @@ def generateRngChallenges():
         "Capture the Hardpoint at "+str(random.randint(2, 3))+" different map positions in one life",
         "Get "+str(random.randint(3, 6))+" kills in your first life of a match",
         "Get "+str(random.randint(3, 8))+" kills using a primary weapon with one hand",
-        "Get "+str(random.randint(3, 8))+" kills with guns held sideways"
+        "Get "+str(random.randint(3, 8))+" kills with guns held sideways",
         "Get "+str(random.randint(4, 10))+" kills while dual wielding guns"
     ]
     return listr
