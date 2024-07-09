@@ -12,6 +12,7 @@ import asyncio
 #==================================================================================================================
 tokenFile = open("botToken.txt")
 BOT_TOKEN = tokenFile.read()
+tokenFile.close()
 
 #first we set up all the stuff relating to generating challenges
 guns = ["MK418", "AK12", "AK303N", "GrotB", "MR96", "UMP45", "Vector45", "Vityaz", "APC9Pro", "G17", "MK23", "PL14","PM9", "Desert Eagle", "G28Z", "ScarH", "Kanto"]
@@ -101,7 +102,7 @@ usersInChallenges = [] #keep track of who's playing so no one can get challenged
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!') #connect bot to discord, put console output once connected
-    print("v1.1 !!!")
+    print("v1.2, the helpful update !")
     try:
         synced = await bot.tree.sync(guild=None)
         print("command tree synced: " +str(len(synced)))
@@ -109,12 +110,22 @@ async def on_ready():
         print("command tree failed to sync: \n"+str(e))
 
 @bot.hybrid_command(description="FAQ for the bot and VAIL Lockout races in general.", help="FAQ for the bot and VAIL Lockout races in general.") #DM's the command user with basically a README
-async def racehelp(ctx, interaction: discord.Interaction): 
-    await interaction.response.defer(ephemeral=True)
-    dmChannel = await ctx.author.create_dm()
-    await dmChannel.send("### What is a Lockout Race?\nA Lockout Race (often just called a 'Lockout') is a race between two players to complete a set number of challenges in a given game. However, both players are given the same set of challenges, and once one person does a challenge, the other player is Locked Out of completing the same one, hence the name.\n\n### How do I use the bot?\nThe bot's command structure is simple. just put in '/lockoutrace' and then ping the person you want to challenge. \nThis will start a first-to-13 race with a 120-second ready-up timer, so you can your opponent can open the game and party up before the race starts\nyou can change those settings at will when you initially call the command. Just use the extra settings in the command prompt\n\n### What are the rules of a VAIL Lockout Race?\nOther than the general concept as organized by the bot, there is no official ruleset, so feel free to come up with your own rules! Just make sure to agree on a specific ruleset before you start. \nHere's my reccomended setup:\nBoth players party up and queue for quickplay together, but swap to opposite teams at every opportunity.\nWhenever a player completes a challenge, both players must exit the match and requeue at the end of the current game.\nAlso, players can agree to requeue at any time, though they MUST always queue together.\nPlayers may not get any intentional help from other players outside the challenge.\nFor the purposes of challenges related to doing things 'in one life', a life can extend between Artifact rounds but not between games.\n\n### LICENSE INFO\nThe bot's code can be found online at https://github.com/IAmPancake/VAIL-Lockout-Discord-Bot, under an MIT License. Full license details are available there, in the 'LICENSE' file.\nContent creators, you may use my bot for whatever you want, including monetized content, with or without credit. (You may want to add credit anyway, so curious viewers can find the bot.) \n\nHappy racing!\n-IAmPancake\n")
-    await dmChannel.send("Additional note: if you're using the instance of the bot hosted by IAmPancake (as opposed to hosting your own instance), be aware that the bot goes down for a few minutes and resets active races every day/night at <t:1718694000:t>. \n Oh, and don't be afraid to DM me if you have any issues or suggestions for challenges to add! I may not get back to you immediately, but I try to read every DM I get (for now). My tag is @iampancake.")
-    await interaction.followup.send("Check your DMs")
+async def racehelp(ctx): 
+    global helpMsg
+    try:
+        await ctx.interaction.response.defer(ephemeral=True)
+    finally:
+        dmChannel = await ctx.author.create_dm()
+        await dmChannel.send(helpMsg)
+        #============================================================================================
+        #=====================comment out the below line if hosting your own bot=====================
+        #============================================================================================
+        await dmChannel.send("Additional note: if you're using the instance of the bot hosted by IAmPancake (as opposed to hosting your own instance), be aware that the bot goes down for a few minutes and resets active races every day/night at <t:1718694000:t>. \n Oh, and don't be afraid to DM me if you have any issues or suggestions for challenges to add! I may not get back to you immediately, but I try to read every DM I get (for now). My tag is @iampancake.")
+        try:
+            await ctx.interaction.followup.send("Check your DMs for the FAQ.")
+        except:
+            await ctx.channel.send(f"Check your DMs for the FAQ, {ctx.author.mention}.", delete_after=5.0)
+    
 @bot.hybrid_command(name="generatechallenges", help="generates a user-set number of VAIL Lockout challenges.") #just give out some challenges, no racing
 async def getSomeChallenges(ctx, numchallenges: int):
     RngChallenges = generateRngChallenges()
@@ -153,9 +164,7 @@ class Confirm(discord.ui.View): #buttons for accepting or denying a challenge
             self.stop()
         else:
             await self.ctx.send("that challenge wasn't for you, "+interaction.user.mention+"!", delete_after=3.0)
-            
         
-
     # This one is similar to the confirmation button except sets the inner value to `False`
     @discord.ui.button(label='Deny Challenge', style=discord.ButtonStyle.grey)
     async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -165,6 +174,14 @@ class Confirm(discord.ui.View): #buttons for accepting or denying a challenge
             self.stop()
         else:
             await self.ctx.send("that challenge wasn't for you, "+interaction.user.mention+"!", delete_after=3.0)
+
+    @discord.ui.button(label="What's a Lockout Race?", style=discord.ButtonStyle.blurple)
+    async def helpMe(self, interaction: discord.Interaction, button: discord.ui.Button):
+        #anyone can click this button to get the faq without needing to do /racehelp
+        global helpMsg
+        await interaction.response.send_message("in a moment, check your DMs for the FAQ.", ephemeral=True)
+        dmChannel = await interaction.user.create_dm()
+        await dmChannel.send(helpMsg)
 
 class DropdownView(discord.ui.View):
     def __init__(self, challengesToList, playersInGame, ctx):
@@ -178,6 +195,7 @@ class DropdownView(discord.ui.View):
 
         # Adds the dropdown to our view object.
         self.add_item(Dropdown(self.challengesToList, self.playersInGame, self.ctx)) #i wish I didn't need to use separate classes here, but it didn't work if i tried to make it one class for some reason. I tried every way
+    
     @discord.ui.button(label='View Unclaimed Challenges', style=discord.ButtonStyle.grey) #if you just want to see the remaining challenges laid out, this button was added to do so w/o cluttering chat (uses ephemeral message)
     async def viewChallengesLeft(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_message("**Challenges Remaining: "+str(len(self.challengesToList))+"**\n"+"\n".join(self.challengesToList), ephemeral=True)
@@ -236,7 +254,7 @@ async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typi
     if membertochallenge == ctx.author:
         await ctx.send("You can't challenge yourself to a race! try using /generatechallenges if you want to get some challenges to do by yourself.", delete_after = 10.0)
     elif ctx.author in usersInChallenges:
-        await ctx.send("you cannot issue a challenge when you are already in a challengd! Either deny the incoming challenge or finish your race, whichever is applicable", delete_after = 10.0) #prevent people from challenging multiple others at once
+        await ctx.send("you cannot issue a challenge when you are already in a challenge! Either deny the incoming challenge or finish your race, whichever is applicable", delete_after = 10.0) #prevent people from challenging multiple others at once
     elif membertochallenge in usersInChallenges:
         await ctx.send("that person has either already been challenged, or is currently participating in a Lockout Race. Try again later, or with someone else.", delete_after = 10.0) #prevent people from being challenged multiple times
     elif (numChallenges > 25): 
