@@ -109,6 +109,30 @@ async def on_ready():
     except Exception as e:
         print("command tree failed to sync: \n"+str(e))
 
+helpMsg = """### What is a Lockout Race?
+A Lockout Race (often just called a 'Lockout') is a race between two players to complete a set number of challenges in a given game. However, both players are given the same set of challenges, and once one person does a challenge, the other player is Locked Out of completing the same one, hence the name.
+
+### How do I use the bot?
+The bot's command structure is simple. just put in '/lockoutrace' and then ping the person you want to challenge. 
+This will start a first-to-13 race with a 120-second ready-up timer, so you can your opponent can open the game and party up before the race starts
+you can change those settings at will when you initially call the command. Just use the extra settings in the command prompt
+
+### What are the rules of a VAIL Lockout Race?
+Other than the general concept as organized by the bot, there is no official ruleset, so feel free to come up with your own rules! Just make sure to agree on a specific ruleset before you start. 
+Here's my reccomended setup:
+Both players party up and queue for quickplay together, but swap to opposite teams at every opportunity.
+Whenever a player completes a challenge, both players must exit the match and requeue at the end of the current game.
+Also, players can agree to requeue at any time, though they MUST always queue together.
+Players may not get any intentional help from other players outside the challenge.
+For the purposes of challenges related to doing things 'in one life', a life can extend between Artifact rounds but not between games.
+
+### LICENSE INFO
+The bot's code can be found online at https://github.com/IAmPancake/VAIL-Lockout-Discord-Bot, under an MIT License. Full license details are available there, in the 'LICENSE' file.
+Content creators, you may use my bot for whatever you want, including monetized content, with or without credit. (You may want to add credit anyway, so curious viewers can find the bot.) 
+
+Happy racing!
+-IAmPancake"""
+
 @bot.hybrid_command(description="FAQ for the bot and VAIL Lockout races in general.", help="FAQ for the bot and VAIL Lockout races in general.") #DM's the command user with basically a README
 async def racehelp(ctx): 
     global helpMsg
