@@ -15,7 +15,7 @@ BOT_TOKEN = tokenFile.read()
 tokenFile.close()
 
 #first we set up all the stuff relating to generating challenges
-guns = ["MK418", "AK12", "AK303N", "GrotB", "MR96", "UMP45", "Vector45", "Vityaz", "APC9Pro", "G17", "MK23", "PL14","PM9", "Desert Eagle", "G28Z", "ScarH", "Kanto"]
+guns = ["MK418", "AK12", "AK303N", "GrotB", "MR96", "UMP45", "Vector45", "Vityaz", "APC9Pro", "G17", "MK23", "PL14","PM9", "Desert Eagle", "NXS Hammer","G28Z", "ScarH", "Kanto"]
 categories = ["Rifle", "DMR", "Sidearm", "SMG", "Grenade"]
 sights = [] #implement later maybe? too many to list and no concrete list
 maps = ["Cliffside", "Este", "Khidi", "Maar", "Miru", "Volt", "Nine", "Suna", "The Void", "Atmos"]
