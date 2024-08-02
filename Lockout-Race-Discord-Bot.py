@@ -17,7 +17,7 @@ tokenFile.close()
 #first we set up all the stuff relating to generating challenges
 guns = ["MK418", "AK12", "AK303N", "GrotB", "MR96", "UMP45", "Vector45", "Vityaz", "APC9Pro", "G17", "MK23", "PL14","PM9", "Desert Eagle", "NXS Hammer","G28Z", "ScarH", "Kanto"]
 categories = ["Rifle", "DMR", "Sidearm", "SMG", "Grenade"]
-sights = [] #implement later maybe? too many to list and no concrete list
+#might add sights later
 maps = ["Cliffside", "Este", "Khidi", "Maar", "Miru", "Volt", "Nine", "Suna", "The Void", "Atmos"]
 modes = ["CTO", "Artifact", "TDM", "FFA", "Gun Game", "Hardpoint", "SKZ", "One in the Chamber"]
 
@@ -45,16 +45,16 @@ Kill through map geometry
 Be alive while 5 enemy players are dead (no ART)
 Kill while you are airborne
 360 spin kill
-Get a kill with 5 different weapons with zoom scopes (no MRO or SpitfireAR)
+Get a kill with 5 different weapons with zoom scopes (no MRO or SpitfireAR, must USE the ZOOM)
 Get 2 kills with each weapon in your loadout in one life
 Defuse or plant the Artifact Scanner while the entire enemy team is dead
-Get a knife kill on someone you can't see
+Get a knife kill without line-of-sight on your victim
 Get the most kills AND be the last one standing in one OitC game
 Get 3 knife kills in one Gun Game round and win
 Ride every zipline on Maar (all the way across) in one life
 Win a game with fewer players on your team than on the opposing team
 Kill someone with their own grenade""".splitlines()
-
+#will add "Get a Russian Roulette kill (on someone other than yourself)" once I know you can do that
 
 #this list is for challenges that take arguments so that they can vary between games without having to list each possibility
 #i had to make it a function otherwise it'd just randomize once when you run the script and then stay the same between races. Fun.
@@ -63,22 +63,23 @@ def generateRngChallenges():
         "Win a game of " + random.choice(modes), 
         "Get "+str(random.randint(5, 12))+" frag nade kills", 
         "Get "+str(random.randint(3, 10))+" impact frag kills",  
-        "Get "+str(random.randint(8, 25))+" kills with " + random.choice(categories)+"s", 
+        "Get "+str(random.randint(8, 20))+" kills with " + random.choice(categories)+"s", 
         "Get "+str(random.randint(5, 15))+" knife kills", #not so much a fan of this one since it can already occur as random from another challenge
-        "Get "+str(random.randint(8, 25))+" kills with a "+random.choice(guns), 
-        "Get "+str(random.randint(3, 9))+" kills with a "+random.choice(guns)+" in one life", 
+        "Get "+str(random.randint(8, 20))+" kills with the "+random.choice(guns), 
+        "Get "+str(random.randint(3, 9))+" kills with the "+random.choice(guns)+" in one life", 
         "Get a kill with every "+ random.choice(categories), 
         "Get "+str(random.randint(2, 10))+" kills through smoke", 
         "Get "+str(random.randint(2, 6))+" headshot kills in one life",
         "Get "+str(random.randint(2, 4))+" kills back-to-back "+str(random.randint(2, 4))+" times",
-        "Get "+str(random.randint(5, 12))+" kills using your non-dominant hand",
-        "Get "+str(random.randint(5, 12))+" headshot kills using iron sights",
-        "Get "+str(random.randint(5, 12))+" kills with a SCARH on full auto",
+        "Get "+str(random.randint(5, 10))+" kills using your non-dominant hand",
+        "Get "+str(random.randint(5, 10))+" headshot kills using iron sights",
+        "Get "+str(random.randint(5, 10))+" kills with the SCARH on full auto",
         "Capture the Hardpoint at "+str(random.randint(2, 3))+" different map positions in one life",
         "Get "+str(random.randint(3, 6))+" kills in your first life of a match",
         "Get "+str(random.randint(3, 8))+" kills using a primary weapon with one hand",
-        "Get "+str(random.randint(3, 8))+" kills with guns held sideways",
-        "Get "+str(random.randint(4, 10))+" kills while dual wielding guns"
+        "Get "+str(random.randint(3, 8))+" kills with guns held fully sideways",
+        "Get "+str(random.randint(4, 10))+" kills while dual wielding guns",
+        "Win on "+random.choice(maps),
     ]
     return listr
 
