@@ -16,6 +16,7 @@ tokenFile.close()
 
 #first we set up all the stuff relating to generating challenges
 guns = ["MK418", "AK12", "AK303N", "GrotB", "MR96", "UMP45", "Vector45", "Vityaz", "APC9Pro", "G17", "MK23", "PL14","PM9", "Desert Eagle", "NXS Hammer","G28Z", "ScarH", "Kanto"]
+#yes, I know it should be called "weapons" and not "guns" because the knife is here, but I already made most of the code before adding the knife so it's staying
 categories = ["Rifle", "DMR", "Sidearm", "SMG", "Grenade"]
 #might add sights later
 maps = ["Cliffside", "Este", "Khidi", "Maar", "Miru", "Volt", "Nine", "Suna", "The Void", "Atmos"]
@@ -59,28 +60,26 @@ Kill someone with their own grenade""".splitlines()
 #this list is for challenges that take arguments so that they can vary between games without having to list each possibility
 #i had to make it a function otherwise it'd just randomize once when you run the script and then stay the same between races. Fun.
 def generateRngChallenges():
-    listr = [
-        "Win a game of " + random.choice(modes), 
-        "Get "+str(random.randint(5, 12))+" frag nade kills", 
-        "Get "+str(random.randint(3, 10))+" impact frag kills",  
-        "Get "+str(random.randint(8, 20))+" kills with " + random.choice(categories)+"s", 
-        "Get "+str(random.randint(5, 15))+" knife kills", #not so much a fan of this one since it can already occur as random from another challenge
-        "Get "+str(random.randint(8, 20))+" kills with the "+random.choice(guns), 
-        "Get "+str(random.randint(3, 9))+" kills with the "+random.choice(guns)+" in one life", 
-        "Get a kill with every "+ random.choice(categories), 
-        "Get "+str(random.randint(2, 10))+" kills through smoke", 
-        "Get "+str(random.randint(2, 6))+" headshot kills in one life",
-        "Get "+str(random.randint(2, 4))+" kills back-to-back "+str(random.randint(2, 4))+" times",
-        "Get "+str(random.randint(5, 10))+" kills using your non-dominant hand",
-        "Get "+str(random.randint(5, 10))+" headshot kills using iron sights",
-        "Get "+str(random.randint(5, 10))+" kills with the SCARH on full auto",
-        "Capture the Hardpoint at "+str(random.randint(2, 3))+" different map positions in one life",
-        "Get "+str(random.randint(3, 6))+" kills in your first life of a match",
-        "Get "+str(random.randint(3, 8))+" kills using a primary weapon with one hand",
-        "Get "+str(random.randint(3, 8))+" kills with guns held fully sideways",
-        "Get "+str(random.randint(4, 10))+" kills while dual wielding guns",
-        "Win on "+random.choice(maps),
-    ]
+    listr =f"""Win a game of {random.choice(modes)}
+        Get {str(random.randint(5, 12))} frag nade kills
+        Get {str(random.randint(3, 10))} impact frag kills
+        Get {str(random.randint(8, 20))} kills with {random.choice(categories)}s 
+        Get {str(random.randint(5, 15))} knife kills
+        Get {str(random.randint(8, 20))} kills with the {random.choice(guns)}
+        Get {str(random.randint(3, 9))} kills with the {random.choice(guns)} in one life
+        Get a kill with every {random.choice(categories)}
+        Get {str(random.randint(2, 10))} kills through smoke 
+        Get {str(random.randint(2, 6))} headshot kills in one life
+        Get {str(random.randint(2, 4))} kills back-to-back {str(random.randint(2, 4))} times
+        Get {str(random.randint(5, 10))} kills using your non-dominant hand
+        Get {str(random.randint(5, 10))} headshot kills using iron sights
+        Get {str(random.randint(5, 10))} kills with the SCARH on full auto
+        Capture the Hardpoint at {str(random.randint(2, 3))} different map positions in one life
+        Get {str(random.randint(3, 6))} kills in your first life of a match
+        Get {str(random.randint(3, 8))} kills using a primary weapon with one hand
+        Get {str(random.randint(3, 8))} kills with guns held fully sideways
+        Get {str(random.randint(4, 10))} kills while dual wielding guns
+        Win on {random.choice(maps)}""".splitlines()
     return listr
 
 #use these two lines instead of one for actually rerandomizing the full list to pick from. Why does it only work this way? I don't know and probably never will
@@ -89,6 +88,21 @@ def generateRngChallenges():
 #allChallenges = listCombiner(RngChallenges, noRngChallenges)
 
 #do not uncomment the above lines
+
+def generateClashChallenges():
+    return f"""Kill your lockout opponent twice in one life
+Kill your lockout opponent with the {random.choice(guns)} {random.randint(1, 5)} time(s)
+Kill your lockout opponent with a headshot {random.randint(1, 5)} time(s)
+Kill your lockout opponent with Impact Frags {random.randint(1, 5)} time(s)
+Kill your lockout opponent with (normal) Frag Grenades {random.randint(1, 5)} time(s)
+Kill your lockout opponent while dual wielding guns
+Kill your lockout opponent with a knife throw
+Kill your lockout opponent with {random.randint(2,5)} different {random.choice(categories)}s (use repeat guns if not enough unlocked)
+Kill your lockout opponent using iron sights {random.randint(1, 5)} time(s)
+Kill your lockout opponent with a sidearm quickdraw
+Kill your lockout opponent with a weapon you didn't spawn with
+Kill your lockout opponent while on the hardpoint
+Beat your lockout opponent at any non-combat minigame (mini golf, tic-tac-toe, etc.)""".splitlines()
 
 #================actual bot behavior and such starts here
 
@@ -171,11 +185,14 @@ async def info_error(ctx, error):
 #------------------
 
 class Confirm(discord.ui.View): #buttons for accepting or denying a challenge
-    def __init__(self, targetUser, ctx):
+    def __init__(self, targetUser, clashmode, ctx):
         super().__init__()
         self.value = None
         self.targetUser = targetUser
+        self.clashmode = clashmode
         self.ctx = ctx
+        if(self.clashmode):
+            self.add_item(ClashModeInfoButton())
         
     # When the confirm button is pressed, set the inner value to `True` and
     # stop the View from listening to more input.
@@ -200,13 +217,22 @@ class Confirm(discord.ui.View): #buttons for accepting or denying a challenge
         else:
             await self.ctx.send("that challenge wasn't for you, "+interaction.user.mention+"!", delete_after=3.0)
 
-    @discord.ui.button(label="What's a Lockout Race?", style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label="What's a Lockout Race?", style=discord.ButtonStyle.blurple, row=1)
     async def helpMe(self, interaction: discord.Interaction, button: discord.ui.Button):
         #anyone can click this button to get the faq without needing to do /racehelp
         global helpMsg
         await interaction.response.send_message("in a moment, check your DMs for the FAQ.", ephemeral=True)
         dmChannel = await interaction.user.create_dm()
         await dmChannel.send(helpMsg)
+
+class ClashModeInfoButton(discord.ui.Button):
+    def __init__(self):
+        super().__init__(style=discord.ButtonStyle.blurple, label="What is Clash Mode?", row=1)
+    async def callback(self, interaction: discord.Interaction, button: discord.ui.Button):
+        print("help button2 pressed")
+        await interaction.response.send_message("Clash Mode is an alternative mode for Lockout Races that features smaller challenges that focus on playing directly against your lockout opponent.", ephemeral=True)
+        print("help button2 msg sent")
+
 
 class DropdownView(discord.ui.View):
     def __init__(self, challengesToList, playersInGame, ctx):
@@ -262,19 +288,27 @@ class ViewAllChallenges(discord.ui.View): #button for seeing all challenges at e
     async def viewAllChallengesEnd(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_message(("**Uncompleted Challenges:**\n"+"\n".join(self.unclaimedChallenges)+"\n**Challenges completed by "+self.players[0].display_name+": "+str(self.scores[self.players[0]])+"**\n"+"\n".join(self.claimedChallenges[self.players[0]])+"\n \n**Challenges completed by "+self.players[1].display_name+": "+str(self.scores[self.players[1]])+"**\n"+"\n".join(self.claimedChallenges[self.players[1]])), ephemeral=True)
 
+
+
+
 #this is the actual lockout race command.
 @bot.hybrid_command(name="lockoutrace", help="Challenge someone to a VAIL Lockout Race. /racehelp for desc", description="Challenge someone to a VAIL Lockout Race. /racehelp for desc")
 @app_commands.describe(
     membertochallenge="Who to challenge to a Lockout Race", 
     challengestowin="Default is first to 13 challenges complete wins.",
-    challengegeneratetimer="The amount of time (seconds) between challenge accepted and race start. Default is 120, to allow time to open VAIL.")
-async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typing.Optional[int] = 13,challengegeneratetimer:typing.Optional[int]=120):
+    challengegeneratetimer="The amount of time (seconds) between challenge accepted and race start. Default is 120, to allow time to open VAIL.",
+    clashmode="Type 'True' for this parameter to do a Clash Race, where all challenges are directly against your opponent")
+async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typing.Optional[int] = 13,challengegeneratetimer:typing.Optional[int]=120,clashmode:typing.Optional[bool]=False):
     print("lockout race cmd sent")
     
     global usersInChallenges #global so that people can't be in two races at once
     numChallenges = (challengestowin*2)-1
-    RngChallenges = generateRngChallenges()
-    allChallenges = listCombiner(RngChallenges, noRngChallenges) #generate all challenges
+
+    if clashmode: #clash mode has a different challenge set
+        allChallenges = generateClashChallenges()
+    else:
+        RngChallenges = generateRngChallenges()
+        allChallenges = listCombiner(RngChallenges, noRngChallenges) #generate list of challenges to select from at random
 
     if membertochallenge == ctx.author:
         await ctx.send("You can't challenge yourself to a race! try using /generatechallenges if you want to get some challenges to do by yourself.", delete_after = 10.0)
@@ -282,17 +316,20 @@ async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typi
         await ctx.send("you cannot issue a challenge when you are already in a challenge! Either deny the incoming challenge or finish your race, whichever is applicable", delete_after = 10.0) #prevent people from challenging multiple others at once
     elif membertochallenge in usersInChallenges:
         await ctx.send("that person has either already been challenged, or is currently participating in a Lockout Race. Try again later, or with someone else.", delete_after = 10.0) #prevent people from being challenged multiple times
-    elif (numChallenges > 25): 
-        await ctx.send("You requested more challenges than can be generated. The maximum is first to 13 (total 25).", delete_after = 10.0) #prevent users from generating more unique challenges than there are unique challenges possible to be generated
+    elif (numChallenges > len(allChallenges)): 
+        await ctx.send("You requested more challenges than can be generated. The max for this mode is first to "+str(int((len(allChallenges)+1)/2))+".", delete_after = 10.0) #prevent users from generating more unique challenges than there are unique challenges possible to be generated
     elif (numChallenges < 1):
         await ctx.send("Cannot generate less than 1 challenge.", delete_after = 10.0) #obvious
     
     else:
         print("lockout race input legit")
-        challengeMsg = (ctx.author.mention +" has challenged "+membertochallenge.mention+" to a VAIL Lockout Race!\nfirst to "+str(challengestowin)+" challenges complete wins!\nPress the 'Accept Challenge' button once ready, or press 'Deny Challenge' to deny. Expires in about 3 minutes.")
+        if clashmode:
+            challengeMsg = (ctx.author.mention +" has challenged "+membertochallenge.mention+" to a **Clash Mode** VAIL Lockout Race!\nfirst to "+str(challengestowin)+" challenges complete wins!\nPress the 'Accept Challenge' button once ready, or press 'Deny Challenge' to deny. Expires in about 3 minutes.")
+        else:
+            challengeMsg = (ctx.author.mention +" has challenged "+membertochallenge.mention+" to a VAIL Lockout Race!\nfirst to "+str(challengestowin)+" challenges complete wins!\nPress the 'Accept Challenge' button once ready, or press 'Deny Challenge' to deny. Expires in about 3 minutes.")
         usersInChallenges.append(ctx.author)
         usersInChallenges.append(membertochallenge)
-        view = Confirm(membertochallenge, ctx)
+        view = Confirm(membertochallenge, clashmode, ctx)
         await ctx.send(challengeMsg, view=view, delete_after=181.0)
     # Wait for the View to stop listening for input...
         await view.wait()
