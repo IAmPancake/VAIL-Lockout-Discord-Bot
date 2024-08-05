@@ -306,8 +306,8 @@ async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typi
 
     if membertochallenge == ctx.author:
         await ctx.send("You can't challenge yourself to a race! try using /generatechallenges if you want to get some challenges to do by yourself.", delete_after = 30.0)
-    #elif membertochallenge.bot:
-    #    await ctx.send("You can't challenge bots to races, silly.", delete_after = 10.0)
+    elif membertochallenge.bot:
+        await ctx.send("You can't challenge bots to races, silly.", delete_after = 10.0)
     elif ctx.author in usersInChallenges:
         await ctx.send("you cannot issue a challenge when you are already in a challenge! Either deny the incoming challenge or finish your race, whichever is applicable", delete_after = 30.0) #prevent people from challenging multiple others at once
     elif membertochallenge in usersInChallenges:
