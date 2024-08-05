@@ -25,3 +25,4 @@ when running the bot, use !help for a command list, and !racehelp for an FAQ.
 
 
 also if you have any ideas for challenges to add to the list, DM me (@iampancake on Discord)
+ 
