@@ -24,16 +24,30 @@ modes = ["CTO", "Artifact", "TDM", "FFA", "Gun Game", "Hardpoint", "SKZ", "One i
 
 #if anyone out there has a good list of all the sights in the game please tell me so I can use it to make challenges thanks
 
-#why is this not a default function/method
-def listCombiner(list1, list2):
-    endlist = list1
-    endlist.extend(list2)
-    return endlist
-
-#.splitlines at the end turns this into a nice list. one challenge per line
-#this list is only for challenges that have no arguments/random parts (i.e. get x kills in one life), where we want to randomize x
-#those will be in a separate list which will be appended to this one
-noRngChallenges = """Get a kill with 3 different primary weapons in one life
+#this list is for challenges that take arguments so that they can vary between games without having to list each possibility
+#i had to make it a function otherwise it'd just randomize once when you run the script and then stay the same between races. Fun.
+def generateChallenges():
+    listr =f"""Win a game of {random.choice(modes)}
+Get {str(random.randint(3, 12))} frag nade kills
+Get {str(random.randint(2, 10))} impact frag kills
+Get {str(random.randint(8, 15))} kills with {random.choice(categories)}s 
+Get {str(random.randint(5, 10))} knife kills
+Get {str(random.randint(8, 15))} kills with the {random.choice(guns)}
+Get {str(random.randint(3, 9))} kills with the {random.choice(guns)} in one life
+Get a kill with every {random.choice(categories)}
+Get {str(random.randint(2, 10))} kills through smoke 
+Get {str(random.randint(2, 6))} headshot kills in one life
+Get {str(random.randint(2, 4))} kills back-to-back {str(random.randint(1, 4))} time(s)
+Get {str(random.randint(5, 10))} kills using your non-dominant hand
+Get {str(random.randint(5, 10))} headshot kills using iron sights
+Get {str(random.randint(5, 10))} kills with the SCARH on full auto
+Capture the Hardpoint at {str(random.randint(2, 3))} different map positions in one life
+Get {str(random.randint(3, 6))} kills in your first life of a match
+Get {str(random.randint(3, 8))} kills using a primary weapon with one hand
+Get {str(random.randint(3, 8))} kills with guns held fully sideways
+Get {str(random.randint(4, 10))} kills while dual wielding guns
+Win on {random.choice(maps)}
+Get a kill with 3 different primary weapons in one life
 Kill your Lockout opponent with a headshot
 Kill your Lockout opponent twice in one life
 Kill while holding the objective IN YOUR HAND (scanner, orb)
@@ -54,42 +68,18 @@ Get the most kills AND be the last one standing in one OitC game
 Get 3 knife kills in one Gun Game round and win
 Ride every zipline on Maar (all the way across) in one life
 Win a game with fewer players on your team than on the opposing team
-Kill someone with their own grenade""".splitlines()
-#will add "Get a Russian Roulette kill (on someone other than yourself)" once I know you can do that
-
-#this list is for challenges that take arguments so that they can vary between games without having to list each possibility
-#i had to make it a function otherwise it'd just randomize once when you run the script and then stay the same between races. Fun.
-def generateRngChallenges():
-    listr =f"""Win a game of {random.choice(modes)}
-        Get {str(random.randint(5, 12))} frag nade kills
-        Get {str(random.randint(3, 10))} impact frag kills
-        Get {str(random.randint(8, 20))} kills with {random.choice(categories)}s 
-        Get {str(random.randint(5, 15))} knife kills
-        Get {str(random.randint(8, 20))} kills with the {random.choice(guns)}
-        Get {str(random.randint(3, 9))} kills with the {random.choice(guns)} in one life
-        Get a kill with every {random.choice(categories)}
-        Get {str(random.randint(2, 10))} kills through smoke 
-        Get {str(random.randint(2, 6))} headshot kills in one life
-        Get {str(random.randint(2, 4))} kills back-to-back {str(random.randint(2, 4))} times
-        Get {str(random.randint(5, 10))} kills using your non-dominant hand
-        Get {str(random.randint(5, 10))} headshot kills using iron sights
-        Get {str(random.randint(5, 10))} kills with the SCARH on full auto
-        Capture the Hardpoint at {str(random.randint(2, 3))} different map positions in one life
-        Get {str(random.randint(3, 6))} kills in your first life of a match
-        Get {str(random.randint(3, 8))} kills using a primary weapon with one hand
-        Get {str(random.randint(3, 8))} kills with guns held fully sideways
-        Get {str(random.randint(4, 10))} kills while dual wielding guns
-        Win on {random.choice(maps)}""".splitlines()
+Kill someone with their own grenade
+Hip Fire Headshot kill""".splitlines()
     return listr
 
 #use these two lines instead of one for actually rerandomizing the full list to pick from. Why does it only work this way? I don't know and probably never will
 #and i tried making it reference a dictionary for the rng methods which in theory should make it rerandomize every time an item gets pulled from the list, but it didn't work
-#RngChallenges = generateRngChallenges()
-#allChallenges = listCombiner(RngChallenges, noRngChallenges)
+#allChallenges = generateChallenges()
+
 
 #do not uncomment the above lines
 
-def generateClashChallenges():
+def generateClashChallenges(): #challenge list for Clash Mode only
     return f"""Kill your lockout opponent twice in one life
 Kill your lockout opponent with the {random.choice(guns)} {random.randint(1, 5)} time(s)
 Kill your lockout opponent with a headshot {random.randint(1, 5)} time(s)
@@ -102,7 +92,11 @@ Kill your lockout opponent using iron sights {random.randint(1, 5)} time(s)
 Kill your lockout opponent with a sidearm quickdraw
 Kill your lockout opponent with a weapon you didn't spawn with
 Kill your lockout opponent while on the hardpoint
-Beat your lockout opponent at any non-combat minigame (mini golf, tic-tac-toe, etc.)""".splitlines()
+Beat your lockout opponent at any non-combat minigame (mini golf, tic-tac-toe, etc.)
+Kill your lockout opponent with the {random.choice(guns)} {random.randint(1, 5)} time(s)
+Kill your lockout opponent while you are airborne
+Trickshot kill your lockout opponent (i.e. 360 spin, hip fire headshot, et cetera. Must be intentional)
+Kill your lockout opponent through map geometry""".splitlines()
 
 #================actual bot behavior and such starts here
 
@@ -117,7 +111,7 @@ usersInChallenges = [] #keep track of who's playing so no one can get challenged
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!') #connect bot to discord, put console output once connected
-    print("v1.2, the helpful update !")
+    print("v2.0, the Clash update!")
     try:
         synced = await bot.tree.sync(guild=None)
         print("command tree synced: " +str(len(synced)))
@@ -155,6 +149,7 @@ async def racehelp(ctx):
         await ctx.interaction.response.defer(ephemeral=True)
     finally:
         dmChannel = await ctx.author.create_dm()
+        await dmChannel.send("__**TLDR; When you hit accept challenge, there'll be a short timer so you can get ready in a party with your opponent. Then, you both will be given the same list of challenges. Completing a challenge blocks your opponent from the same one. Complete the majority to win.**__")
         await dmChannel.send(helpMsg)
         #============================================================================================
         #=====================comment out the below line if hosting your own bot=====================
@@ -167,8 +162,7 @@ async def racehelp(ctx):
     
 @bot.hybrid_command(name="generatechallenges", help="generates a user-set number of VAIL Lockout challenges.") #just give out some challenges, no racing
 async def getSomeChallenges(ctx, numchallenges: int):
-    RngChallenges = generateRngChallenges()
-    allChallenges = listCombiner(RngChallenges, noRngChallenges) #generate the set of challenges to pull from
+    allChallenges = generateChallenges() #generate the set of challenges to pull from
     if (numchallenges > len(allChallenges)):
         await ctx.send("You requested more challenges than can be generated.", delete_after = 10.0) #prevent users from generating for unique challenges than there are unique challenges
     elif (numchallenges < 1):
@@ -223,14 +217,15 @@ class Confirm(discord.ui.View): #buttons for accepting or denying a challenge
         global helpMsg
         await interaction.response.send_message("in a moment, check your DMs for the FAQ.", ephemeral=True)
         dmChannel = await interaction.user.create_dm()
+        await dmChannel.send("__**TLDR; When you hit accept challenge, there'll be a short timer so you can get ready in a party with your opponent. Then, you both will be given the same list of challenges. Completing a challenge blocks your opponent from the same one. Complete the majority to win.**__")
         await dmChannel.send(helpMsg)
 
 class ClashModeInfoButton(discord.ui.Button):
     def __init__(self):
         super().__init__(style=discord.ButtonStyle.blurple, label="What is Clash Mode?", row=1)
-    async def callback(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def callback(self, interaction: discord.Interaction):
         print("help button2 pressed")
-        await interaction.response.send_message("Clash Mode is an alternative mode for Lockout Races that features smaller challenges that focus on playing directly against your lockout opponent.", ephemeral=True)
+        await interaction.response.send_message("Clash Mode is an alternative mode for Lockout Races that features smaller challenges that focus on playing directly against your lockout opponent.\nPress \"What is a Lockout Race?\" for a description of lockout races in general.", ephemeral=True)
         print("help button2 msg sent")
 
 
@@ -307,17 +302,21 @@ async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typi
     if clashmode: #clash mode has a different challenge set
         allChallenges = generateClashChallenges()
     else:
-        RngChallenges = generateRngChallenges()
-        allChallenges = listCombiner(RngChallenges, noRngChallenges) #generate list of challenges to select from at random
+        allChallenges = generateChallenges() #generate list of challenges to select from at random
 
     if membertochallenge == ctx.author:
         await ctx.send("You can't challenge yourself to a race! try using /generatechallenges if you want to get some challenges to do by yourself.", delete_after = 10.0)
+    #elif membertochallenge.bot:
+    #    await ctx.send("You can't challenge bots to races, silly.", delete_after = 10.0)
     elif ctx.author in usersInChallenges:
         await ctx.send("you cannot issue a challenge when you are already in a challenge! Either deny the incoming challenge or finish your race, whichever is applicable", delete_after = 10.0) #prevent people from challenging multiple others at once
     elif membertochallenge in usersInChallenges:
         await ctx.send("that person has either already been challenged, or is currently participating in a Lockout Race. Try again later, or with someone else.", delete_after = 10.0) #prevent people from being challenged multiple times
     elif (numChallenges > len(allChallenges)): 
-        await ctx.send("You requested more challenges than can be generated. The max for this mode is first to "+str(int((len(allChallenges)+1)/2))+".", delete_after = 10.0) #prevent users from generating more unique challenges than there are unique challenges possible to be generated
+        if(clashmode and (numChallenges==13)):
+            await ctx.send("For clash mode, you have to specify the score limit you want yourself. Right now, the limit is first to "+str(min([int((len(allChallenges)+1)/2),13])+"."))
+        else:
+            await ctx.send("You requested more challenges than can be generated. The max for this mode is first to "+str(min(int((len(allChallenges)+1)/2)),13)+".", delete_after = 10.0) #prevent users from generating more unique challenges than there are unique challenges possible to be generated
     elif (numChallenges < 1):
         await ctx.send("Cannot generate less than 1 challenge.", delete_after = 10.0) #obvious
     
