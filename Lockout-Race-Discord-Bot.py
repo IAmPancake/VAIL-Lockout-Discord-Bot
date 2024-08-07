@@ -312,7 +312,7 @@ async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typi
         await ctx.send("you cannot issue a challenge when you are already in a challenge! Either deny the incoming challenge or finish your race, whichever is applicable", delete_after = 30.0) #prevent people from challenging multiple others at once
     elif membertochallenge in usersInChallenges:
         await ctx.send("that person has either already been challenged, or is currently participating in a Lockout Race. Try again later, or with someone else.", delete_after = 30.0) #prevent people from being challenged multiple times
-    elif (numChallenges > len(allChallenges)): 
+    elif (numChallenges > min(len(allChallenges),25)): 
         if(clashmode and (challengestowin==13)):
             await ctx.send("For clash mode, you have to specify the score limit you want yourself. Right now, the limit is first to "+str(min((int((len(allChallenges)+1)/2)),13))+".", delete_after=30.0)
         else:
