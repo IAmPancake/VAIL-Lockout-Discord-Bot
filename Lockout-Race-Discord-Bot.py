@@ -229,9 +229,9 @@ class ClashModeInfoButton(discord.ui.Button):
         print("help button2 msg sent")
 
 
-class DropdownView(discord.ui.View(timeout=300)):
+class DropdownView(discord.ui.View):
     def __init__(self, challengesToList, playersInGame, ctx):
-        super().__init__()
+        super().__init__(timeout=300)
         self.challengesToList = challengesToList
         self.ctx = ctx
         self.playersInGame = playersInGame
