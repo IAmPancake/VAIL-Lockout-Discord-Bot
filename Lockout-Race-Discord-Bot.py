@@ -229,7 +229,7 @@ class ClashModeInfoButton(discord.ui.Button):
         print("help button2 msg sent")
 
 
-class DropdownView(discord.ui.View):
+class DropdownView(discord.ui.View(timeout=300)):
     def __init__(self, challengesToList, playersInGame, ctx):
         super().__init__()
         self.challengesToList = challengesToList
@@ -354,14 +354,18 @@ async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typi
                 await ctx.send("Your challenges will be generated in about "+str(round(challengegeneratetimer/60,2))+" minutes. Take the time to open VAIL and get in a party, because the race starts as soon as the challenges are shown!")
                 print("waiting for challenge timer")
                 await asyncio.sleep(challengegeneratetimer) #give ppl time to open game
-            await ctx.send(ctx.author.mention+" and "+membertochallenge.mention+", here are your challenges!\nFirst to complete **"+str(challengestowin)+"** of them wins!\n"+("\n".join(challengesPerGame)))
+            DropdownMessageToSend = (ctx.author.mention+" and "+membertochallenge.mention+", here are your challenges!\nFirst to complete **"+str(challengestowin)+"** of them wins!\n"+("\n".join(challengesPerGame)))
+            IsDropdownMessageSilent = False
             print("game start")
-
+            #DropdownMessageToSend is used to consolidate multiple messages that would precede the one with the dropdown into one message 
             while((scores[ctx.author]<challengestowin)and(scores[membertochallenge]<challengestowin)):
                 view = DropdownView(challengesAvailable, players, ctx)
-                await ctx.send("The score is **"+str(ctx.author.mention+" "+str(scores[ctx.author])+" : "+str(scores[membertochallenge])+" "+membertochallenge.mention+"**\nFirst to "+str(challengestowin)+" challenges complete wins!\nChoose a challenge to claim (note: claims as soon as you click!"), view=view, delete_after=180.0, silent=True)
+                DropdownMessageToSend += ("\nThe score is **"+str(ctx.author.mention+" "+str(scores[ctx.author])+" : "+str(scores[membertochallenge])+" "+membertochallenge.mention+"**\nFirst to "+str(challengestowin)+" challenges complete wins!\nChoose a challenge to claim (note: claims as soon as you click!"))
+                await ctx.send(DropdownMessageToSend, view=view, silent=IsDropdownMessageSilent, delete_after=300.0)
+                DropdownMessageToSend = ""
                 await view.wait() #wait for a valid challenge claim
                 if view.selected_value != None:
+                    IsDropdownMessageSilent=False
                     print("Continue with the code post-selection")
                     print(view.selected_value)
                     print(view.claimingPlayer.mention)
@@ -370,7 +374,7 @@ async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typi
                     x.remove(view.claimingPlayer)
                     nonClaimingPlayer = x[0]
                     
-                    await ctx.send("Hey "+nonClaimingPlayer.mention+","+view.claimingPlayer.mention+" just claimed **"+view.selected_value+".**\nYou're out of luck if you were going for it, because now you're Locked Out!", delete_after=3600.0)
+                    DropdownMessageToSend += ("Hey "+nonClaimingPlayer.mention+","+view.claimingPlayer.mention+" just claimed **"+view.selected_value+".**\nYou're out of luck if you were going for it, because now you're Locked Out!")
                     
                     challengesAvailable.remove(view.selected_value) #remove completed challenge from list
                     challengesCompleted[view.claimingPlayer].append(view.selected_value)
@@ -378,9 +382,10 @@ async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typi
                     scores[view.claimingPlayer] = len(challengesCompleted[view.claimingPlayer])
                     scores[nonClaimingPlayer] = len(challengesCompleted[nonClaimingPlayer])
                     
-                    await asyncio.sleep(1) #prevent rate limiting by self rate limiting lol
+                    #await asyncio.sleep(1) #prevent rate limiting by self rate limiting lol
                 else:
                     print("users took too long to answer interaction. generating new dropdown message.")
+                    IsDropdownMessageSilent=True
             
             print("racing users removed from list of users in play")
             usersInChallenges.remove(ctx.author) #at the end of the game, remove both players from the "in a game" list so they can play again.
