@@ -37,7 +37,7 @@ Get {str(random.randint(3, 9))} kills with the {random.choice(guns)} in one life
 Get a kill with every {random.choice(categories)}
 Get {str(random.randint(2, 10))} kills through smoke 
 Get {str(random.randint(2, 6))} headshot kills in one life
-Get {str(random.randint(2, 4))} kills back-to-back {str(random.randint(1, 4))} time(s)
+Get {str(random.randint(2, 3))} kills back-to-back {str(random.randint(1, 4))} time(s)
 Get {str(random.randint(5, 10))} kills using your non-dominant hand
 Get {str(random.randint(5, 10))} headshot kills using iron sights
 Get {str(random.randint(5, 10))} kills with the SCARH on full auto
@@ -69,7 +69,8 @@ Get 3 knife kills in one Gun Game round and win
 Ride every zipline on Maar (all the way across) in one life
 Win a game with fewer players on your team than on the opposing team
 Kill someone with their own grenade
-Hip Fire Headshot kill""".splitlines()
+Hip Fire Headshot kill
+Get {str(random.randint(3, 10))} kills with the iron sights on the {random.choice(guns)}""".splitlines()
     return listr
 
 #use these two lines instead of one for actually rerandomizing the full list to pick from. Why does it only work this way? I don't know and probably never will
@@ -111,7 +112,7 @@ usersInChallenges = [] #keep track of who's playing so no one can get challenged
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!') #connect bot to discord, put console output once connected
-    print("v2.0, the Clash update!")
+    print("v2.1, no more 429!")
     try:
         synced = await bot.tree.sync(guild=None)
         print("command tree synced: " +str(len(synced)))
@@ -272,7 +273,7 @@ class Dropdown(discord.ui.Select):
         
 class ViewAllChallenges(discord.ui.View): #button for seeing all challenges at end of game. Done as such to prevent clutter.
     def __init__(self, players, scores, claimedChallenges, unclaimedChallenges,):
-        super().__init__()
+        super().__init__(timeout=7200.0)
         self.value = None
         self.players = players
         self.scores = scores
