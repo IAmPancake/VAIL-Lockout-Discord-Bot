@@ -95,7 +95,7 @@ Kill your lockout opponent while on the hardpoint
 Beat your lockout opponent at any non-combat minigame (mini golf, tic-tac-toe, etc.)
 Kill your lockout opponent with the {random.choice(guns)} {random.randint(1, 5)} time(s)
 Kill your lockout opponent while you are airborne
-Trickshot kill your lockout opponent (i.e. 360 spin, hip fire headshot, et cetera. Must be intentional)
+Trickshot kill your lockout opponent (i.e. 360 spin, hip fire headshot, etc. Must be on purpose)
 Kill your lockout opponent through map geometry""".splitlines()
 
 #================actual bot behavior and such starts here
