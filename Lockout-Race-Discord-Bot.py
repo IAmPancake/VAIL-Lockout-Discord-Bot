@@ -33,7 +33,7 @@ Get {str(random.randint(2, 10))} impact frag kills
 Get {str(random.randint(8, 15))} kills with {random.choice(categories)}s 
 Get {str(random.randint(5, 10))} knife kills
 Get {str(random.randint(8, 15))} kills with the {random.choice(guns)}
-Get {str(random.randint(3, 9))} kills with the {random.choice(guns)} in one life
+Get {str(random.randint(3, 7))} kills with the {random.choice(guns)} in one life
 Get a kill with every {random.choice(categories)}
 Get {str(random.randint(2, 10))} kills through smoke 
 Get {str(random.randint(2, 6))} headshot kills in one life
@@ -42,10 +42,9 @@ Get {str(random.randint(5, 10))} kills using your non-dominant hand
 Get {str(random.randint(5, 10))} headshot kills using iron sights
 Get {str(random.randint(5, 10))} kills with the SCARH on full auto
 Capture the Hardpoint at {str(random.randint(2, 3))} different map positions in one life
-Get {str(random.randint(3, 6))} kills in your first life of a match
 Get {str(random.randint(3, 8))} kills using a primary weapon with one hand
 Get {str(random.randint(3, 8))} kills with guns held fully sideways
-Get {str(random.randint(4, 10))} kills while dual wielding guns
+Get {str(random.randint(4, 15))} kills while dual wielding guns
 Win on {random.choice(maps)}
 Get a kill with 3 different primary weapons in one life
 Kill your Lockout opponent with a headshot
@@ -70,6 +69,7 @@ Ride every zipline on Maar (all the way across) in one life
 Win a game with fewer players on your team than on the opposing team
 Kill someone with their own grenade
 Hip Fire Headshot kill
+Russian Roulette kill
 Get {str(random.randint(3, 10))} kills with the iron sights on the {random.choice(guns)}""".splitlines()
     return listr
 
