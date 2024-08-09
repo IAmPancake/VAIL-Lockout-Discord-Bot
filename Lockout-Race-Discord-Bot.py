@@ -243,7 +243,7 @@ class DropdownView(discord.ui.View):
         # Adds the dropdown to our view object.
         self.add_item(Dropdown(self.challengesToList, self.playersInGame, self.ctx)) #i wish I didn't need to use separate classes here, but it didn't work if i tried to make it one class for some reason. I tried every way
     
-    @discord.ui.button(label='View Unclaimed Challenges', style=discord.ButtonStyle.grey) #if you just want to see the remaining challenges laid out, this button was added to do so w/o cluttering chat (uses ephemeral message)
+    @discord.ui.button(label='View Unclaimed Challenges', style=discord.ButtonStyle.grey, row=1) #if you just want to see the remaining challenges laid out, this button was added to do so w/o cluttering chat (uses ephemeral message)
     async def viewChallengesLeft(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_message("**Challenges Remaining: "+str(len(self.challengesToList))+"**\n"+"\n".join(self.challengesToList), ephemeral=True)
 
@@ -282,7 +282,7 @@ class ViewAllChallenges(discord.ui.View): #button for seeing all challenges at e
         
     @discord.ui.button(label='View All Challenges', style=discord.ButtonStyle.grey)
     async def viewAllChallengesEnd(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_message(("**Uncompleted Challenges:**\n"+"\n".join(self.unclaimedChallenges)+"\n**Challenges completed by "+self.players[0].display_name+": "+str(self.scores[self.players[0]])+"**\n"+"\n".join(self.claimedChallenges[self.players[0]])+"\n \n**Challenges completed by "+self.players[1].display_name+": "+str(self.scores[self.players[1]])+"**\n"+"\n".join(self.claimedChallenges[self.players[1]])), ephemeral=True)
+        await interaction.response.send_message(("**Uncompleted Challenges:**\n"+"\n".join(self.unclaimedChallenges)+"\n \n**Challenges completed by "+self.players[0].display_name+": "+str(self.scores[self.players[0]])+"**\n"+"\n".join(self.claimedChallenges[self.players[0]])+"\n \n**Challenges completed by "+self.players[1].display_name+": "+str(self.scores[self.players[1]])+"**\n"+"\n".join(self.claimedChallenges[self.players[1]])), ephemeral=True)
 
 
 
@@ -361,7 +361,7 @@ async def LockoutRace(ctx, membertochallenge:discord.Member,challengestowin:typi
             #DropdownMessageToSend is used to consolidate multiple messages that would precede the one with the dropdown into one message 
             while((scores[ctx.author]<challengestowin)and(scores[membertochallenge]<challengestowin)):
                 view = DropdownView(challengesAvailable, players, ctx)
-                DropdownMessageToSend += ("\nThe score is **"+str(ctx.author.mention+" "+str(scores[ctx.author])+" : "+str(scores[membertochallenge])+" "+membertochallenge.mention+"**\nFirst to "+str(challengestowin)+" challenges complete wins!\nChoose a challenge to claim (note: claims as soon as you click!"))
+                DropdownMessageToSend += ("\n \nThe score is **"+str(ctx.author.mention+" "+str(scores[ctx.author])+" : "+str(scores[membertochallenge])+" "+membertochallenge.mention+"**\nFirst to "+str(challengestowin)+" challenges complete wins!\nChoose a challenge to claim (note: claims as soon as you click!"))
                 await ctx.send(DropdownMessageToSend, view=view, silent=IsDropdownMessageSilent, delete_after=300.0)
                 DropdownMessageToSend = ""
                 await view.wait() #wait for a valid challenge claim
